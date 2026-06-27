@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buku Tamu Keren</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 8px; }
+        input, textarea, button { width: 100%; margin-bottom: 10px; padding: 10px; box-sizing: border-box; }
+        button { background: #007bff; color: white; border: none; cursor: pointer; }
+        .card { background: #e9ecef; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Buku Tamuku</h2>
+    <form id="formKu">
+        <input type="text" id="nama" placeholder="Namamu..." required>
+        <textarea id="pesan" placeholder="Tulis pesan..." required></textarea>
+        <button type="submit">Kirim Pesan</button>
+    </form>
+    <hr>
+    <div id="daftarPesan">Sedang memuat data...</div>
+</div>
+
+<script>
+    // PERHATIAN: GANTI LINK DI BAWAH INI DENGAN LINK PINGGY MILIKMU!
+    const URL_BACKEND = 'https://openssh.com/pq.html
+root@a.pinggy.io's';
+
+    async function ambilData() {
+        const respons = await fetch(URL_BACKEND);
+        const data = await respons.json();
+        const tempatPesan = document.getElementById('daftarPesan');
+        tempatPesan.innerHTML = ''; 
+        
+        data.forEach(item => {
+            tempatPesan.innerHTML += `<div class="card"><b>${item.name}</b><p>${item.message}</p></div>`;
+        });
+    }
+
+    document.getElementById('formKu').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const inputNama = document.getElementById('nama').value;
+        const inputPesan = document.getElementById('pesan').value;
+
+        await fetch(URL_BACKEND, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: inputNama, message: inputPesan })
+        });
+
+        document.getElementById('nama').value = '';
+        document.getElementById('pesan').value = '';
+        ambilData(); // Segarkan daftar pesan
+    });
+
+    ambilData(); // Panggil data pertama kali web dibuka
+</script>
+
+</body>
+      </html>
